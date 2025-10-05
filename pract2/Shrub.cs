@@ -12,6 +12,8 @@ namespace pract2
 
         public void Grow(double growAmount)
         {
+            if (growAmount <= 0)
+                throw new ArgumentException("Для роста куста нужно ввести положительное значение");
             Height = new Height(Height.Meters + growAmount);
             Console.WriteLine($"Куст вырос на {growAmount} м, текущая высота = {Height.Meters}.");
         }

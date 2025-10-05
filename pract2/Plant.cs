@@ -8,11 +8,31 @@ namespace pract2
 {
     internal class Plant : PlantTypes
     {
-        protected Height Height {  get; set; }
-        protected TreeType Type {  get; set; }
+        protected Height _height;
+        protected TreeType _type;
+        public Height Height
+        {
+            get => _height;
+            set
+            {
+                if (value.Meters < 0)
+                    throw new ArgumentException("Рост должен быть положительным");
+                _height = value;
+            }
+        }
+        
+        public TreeType Type 
+        {   get => _type;
+            set
+            {
+                if (!Enum.IsDefined(typeof(PlantTypes.TreeType), value))
+                    throw new ArgumentException("Неверный ввод типа растения");
+                _type = value;
+            }
+        }
         
         private readonly string _name;
-        protected string Name { get; }
+        public string Name => _name;
 
         protected Plant()
         {

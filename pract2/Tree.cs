@@ -90,7 +90,7 @@ namespace pract2
                     Console.WriteLine("Дерево ещё больное.");
                 }
             }
-
+            // Добавляем случайное количество фруктов (симулируем рост)
             _countFruit += rand.Next(5, 15);
             Console.WriteLine($"Теперь на дереве {_countFruit} фруктов.");
         }
@@ -100,7 +100,7 @@ namespace pract2
             var rand = new Random();
             Console.WriteLine("Вы трогаете дерево под вдохновляющую музыку...");
 
-            int effects = rand.Next(0, 3);
+            int effects = rand.Next(0, 3); // случайный эффект
             switch (effects)
             {
                 case 0:
@@ -108,8 +108,11 @@ namespace pract2
                     Console.WriteLine("Дерево расцвело! Появились новые фрукты.");
                     break;
                 case 1:
-                    TreeSick = false;
-                    Console.WriteLine("Дерево исцелилось!");
+                    if (TreeSick == true)
+                    {
+                        TreeSick = false;
+                        Console.WriteLine("Дерево исцелилось!");
+                    }
                     break;
                 case 2:
                     Console.WriteLine("Дерево шелестит листвой!");
@@ -123,12 +126,13 @@ namespace pract2
             string height = Height.HeightToString();
             return $"{Name}: тип - {Type} возраст {Age} лет, рост  - {height}, {CountFruit} фруктов, состояние - {state}";
         }
-
+    
+        // Создаёт новое дерево как комбинацию двух: усредняет рост и возраст, суммирует фрукты.
         public static Tree operator +(Tree t1, Tree t2)
         {  
             return new Tree(
                 new PlantTypes.Height((t1.Height.Meters + t2.Height.Meters) / 2),
-                TreeType.None,
+                t1.Age >= t2.Age ? t1.Type : t2.Type,
                 t1.Name + " " + t2.Name,
                 (t1.Age + t2.Age) / 2,
                 t1.CountFruit + t2.CountFruit,
@@ -136,11 +140,12 @@ namespace pract2
             );
         }
         
-        // В C# перегрузка оператора присваивания (=) невозможна,
-        // поэтому реализован метод CopyFrom(Tree t),
-        // выполняющий аналогичную функцию.
+        // В C# перегрузка оператора присваивания невозможна,
+        // поэтому реализован метод CopyFrom(Tree t), выполняющий аналогичную функцию.
         public void CopyForm(Tree t)
         {
+            _type = t.Type;
+            _height = t.Height;
             _age = t.Age;
             _countFruit = t.CountFruit;
             _treeSick = t.TreeSick;
