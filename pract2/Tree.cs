@@ -11,22 +11,22 @@ namespace pract2
     {
         private double _age;
         private int _countFruit;
-        bool TreeSick {  get; set; }
+        private bool _treeSick;
 
         public double Age
         {
-            get { return _age; }
+            get => _age;
             set
             {
                 if (value < 0)
-                    throw new  ArgumentException("Возраст должен быть положительным");
-                _age =  value; 
+                    throw new ArgumentException("Возраст должен быть положительным");
+                _age = value;
             }
         }
-        
+
         public int CountFruit
         {
-            get { return _countFruit; }
+            get => _countFruit;
             set
             {
                 if (value < 0)
@@ -35,27 +35,41 @@ namespace pract2
             }
         }
 
-        public Tree(double age, int countFruit, bool treeSick)
+        public bool TreeSick
+        {
+            get => _treeSick;
+            set => _treeSick = value;
+        }
+
+        public Tree()
+        {
+            _age = 0;
+            _countFruit = 0;
+            _treeSick = false;
+        }
+
+        public Tree(Height height, TreeType type, string name, double age, int countFruit, bool treeSick)
+            : base(height, type, name)
         {
             Age = age;
             CountFruit = countFruit;
             TreeSick = treeSick;
         }
-        
+
         public int Harvesting(int amountToHarvest)
-        {   
+        {
             if (amountToHarvest <= 0)
                 throw new ArgumentException("Количество для сбора должно быть положительным");
-            
+
             if (TreeSick)
             {
                 Console.WriteLine("Дерево болеет, урожай испорчен");
                 return 0;
             }
-            
+
             if (_countFruit < amountToHarvest)
                 throw new InvalidOperationException("Недостаточно фруктов для сбора");
-            
+
             _countFruit -= amountToHarvest;
             return amountToHarvest;
         }
@@ -83,10 +97,10 @@ namespace pract2
 
         public void Touch()
         {
-            var rand =  new Random();
+            var rand = new Random();
             Console.WriteLine("Вы трогаете дерево под вдохновляющую музыку...");
-            
-            int effects =  rand.Next(0, 3);
+
+            int effects = rand.Next(0, 3);
             switch (effects)
             {
                 case 0:
@@ -101,6 +115,35 @@ namespace pract2
                     Console.WriteLine("Дерево шелестит листвой!");
                     break;
             }
+        }
+
+        public override string ToString()
+        {
+            string state = TreeSick ? "болеет" : "здорово";
+            string height = Height.HeightToString();
+            return $"{Name}: тип - {Type} возраст {Age} лет, рост  - {height}, {CountFruit} фруктов, состояние - {state}";
+        }
+
+        public static Tree operator +(Tree t1, Tree t2)
+        {  
+            return new Tree(
+                new PlantTypes.Height((t1.Height.Meters + t2.Height.Meters) / 2),
+                TreeType.None,
+                t1.Name + " " + t2.Name,
+                (t1.Age + t2.Age) / 2,
+                t1.CountFruit + t2.CountFruit,
+                t1.TreeSick || t2.TreeSick
+            );
+        }
+        
+        // В C# перегрузка оператора присваивания (=) невозможна,
+        // поэтому реализован метод CopyFrom(Tree t),
+        // выполняющий аналогичную функцию.
+        public void CopyForm(Tree t)
+        {
+            _age = t.Age;
+            _countFruit = t.CountFruit;
+            _treeSick = t.TreeSick;
         }
     }
 }

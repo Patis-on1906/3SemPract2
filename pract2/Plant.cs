@@ -10,17 +10,22 @@ namespace pract2
     {
         protected Height Height {  get; set; }
         protected TreeType Type {  get; set; }
+        
+        private readonly string _name;
+        protected string Name { get; }
 
-        public Plant()
+        protected Plant()
         {
             Height = new Height(0);
             Type = TreeType.None;
+            _name = "Неизвестное дерево";
         }
         
-        public Plant(Height height, TreeType type)
+        protected Plant(Height height, TreeType type, string name)
         {
             Height = height;
-            Type = type;
+            Type = type; 
+            _name = name;
         }
         
         public void Deconstruct(out Height height, out TreeType type)
