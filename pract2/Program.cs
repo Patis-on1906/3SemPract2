@@ -60,34 +60,56 @@ namespace pract2
         }
 
         // Общий метод для ввода данных растения (рост, тип, имя)
-        static (double height, PlantTypes.TreeType type, string name) InputPlantData()
+        static (double height, string name) InputPlantData()
         {
             Console.Write("Введите высоту в метрах (напр. 12,3): ");
             double height = double.Parse(Console.ReadLine());
-            Console.Write("Выберите тип (0 - Oak, 1 - Pine, 2 - Birch, 3 - Maple, 4 - None): ");
-            var type = (PlantTypes.TreeType)int.Parse(Console.ReadLine());
             Console.Write("Введите имя: ");
             string name = Console.ReadLine();
 
-            return (height, type, name);
+            return (height, name);
         }
 
         static Tree CreateTree()
         {
-            var (height, type, name) = InputPlantData();
+            var (height, name) = InputPlantData();
+            Console.Write("Выберите тип: 0 - Oak, 1 - Pine, 2 - Birch, 3 - Maple, 4 - None:");
+            var type = (PlantTypes.PlantType)int.Parse(Console.ReadLine());
             Console.Write("Введите возраст дерева: ");
             double age = Convert.ToDouble(Console.ReadLine());
             Console.Write("Введите количество фруктов на дереве: ");
             int countFruit = Convert.ToInt32(Console.ReadLine());
             Console.Write("Дерево больное? (0 = нет, 1 = да): ");
-            bool treeSick = Convert.ToBoolean(int.Parse(Console.ReadLine()));
+            bool treeSick;
+            while (true)
+            {
+                Console.Write("Дерево больное? (0 = нет, 1 = да): ");
+                string input = Console.ReadLine();
+
+                if (input == "0")
+                {
+                    treeSick = false;
+                    break;
+                }
+                else if (input == "1")
+                {
+                    treeSick = true;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка ввода! Введите 0 (нет) или 1 (да).");
+                }
+            }
 
             return new Tree(new PlantTypes.Height(height), type, name, age, countFruit, treeSick);
         }
 
         static Shrub CreateShrub()
         {
-            var (height, type, name) = InputPlantData();
+            var (height, name) = InputPlantData();
+            Console.Write("Выберите тип: 4 - None, 5 - Rose, 6 - Raspberry, 7 - Currant, 8 - Lilac:");
+            var type = (PlantTypes.PlantType)int.Parse(Console.ReadLine());
             return new Shrub(new PlantTypes.Height(height), type, name);
         }
 

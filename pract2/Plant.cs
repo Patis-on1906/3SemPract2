@@ -8,8 +8,11 @@ namespace pract2
 {
     internal class Plant : PlantTypes
     {
+        private readonly string _name;
         protected Height _height;
-        protected TreeType _type;
+        protected PlantType _type;
+        public string Name => _name;
+        
         public Height Height
         {
             get => _height;
@@ -21,34 +24,31 @@ namespace pract2
             }
         }
         
-        public TreeType Type 
+        public PlantType Type 
         {   get => _type;
             set
             {
-                if (!Enum.IsDefined(typeof(PlantTypes.TreeType), value))
+                if (!Enum.IsDefined(typeof(PlantTypes.PlantType), value))
                     throw new ArgumentException("Неверный ввод типа растения");
                 _type = value;
             }
         }
-        
-        private readonly string _name;
-        public string Name => _name;
 
         protected Plant()
         {
             Height = new Height(0);
-            Type = TreeType.None;
+            Type = PlantType.None;
             _name = "Неизвестное дерево";
         }
         
-        protected Plant(Height height, TreeType type, string name)
+        protected Plant(Height height, PlantType type, string name)
         {
             Height = height;
             Type = type; 
             _name = name;
         }
         
-        public void Deconstruct(out Height height, out TreeType type)
+        public void Deconstruct(out Height height, out PlantType type)
         {
             height = Height;
             type = Type;

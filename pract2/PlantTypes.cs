@@ -5,11 +5,17 @@ namespace pract2
 {
     public class PlantTypes
     {
-        public enum TreeType
+        public enum PlantType
         {
-            Oak, Pine, Birch, Maple, None
+            // деревья
+            Oak, Pine, Birch, Maple,
+            
+            None,
+            
+            // кусты
+            Rose, Raspberry, Currant, Lilac
         }
-
+        
         public struct Height
         {
             public double Meters { get; }

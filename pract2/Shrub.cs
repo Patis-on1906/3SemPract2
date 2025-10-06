@@ -7,8 +7,20 @@ using System.Threading.Tasks;
 namespace pract2
 {
     internal class Shrub : Plant
-    {   
-        public Shrub(Height height, TreeType type, string name) : base(height, type, name) {}
+    {
+        public Shrub(Height height, PlantType type, string name)
+            : base(height, type, name)
+        {
+            if (type == PlantType.Rose || type == PlantType.Raspberry || 
+                type == PlantType.Currant || type == PlantType.Lilac || type == PlantType.None)
+            {
+                Type =  type;
+            } 
+            else
+            {
+                throw new ArgumentException($"Тип {type} не является кустом!");
+            }
+        }
 
         public void Grow(double growAmount)
         {

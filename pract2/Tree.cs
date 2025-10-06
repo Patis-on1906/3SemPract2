@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net.Cache;
 using System.Text;
@@ -11,7 +12,7 @@ namespace pract2
     {
         private double _age;
         private int _countFruit;
-        private bool _treeSick;
+        private bool TreeSick {  get; set; }
 
         public double Age
         {
@@ -34,23 +35,27 @@ namespace pract2
                 _countFruit = value;
             }
         }
-
-        public bool TreeSick
-        {
-            get => _treeSick;
-            set => _treeSick = value;
-        }
-
+        
         public Tree()
         {
             _age = 0;
             _countFruit = 0;
-            _treeSick = false;
+            TreeSick = false;
         }
 
-        public Tree(Height height, TreeType type, string name, double age, int countFruit, bool treeSick)
+        public Tree(Height height, PlantType type, string name, double age, int countFruit, bool treeSick)
             : base(height, type, name)
         {
+            if (type == PlantType.Oak || type == PlantType.Pine || type == PlantType.Birch 
+                || type == PlantType.Maple || type == PlantType.None)
+            {
+                Type =  type;
+            } 
+            else
+            {
+                throw new ArgumentException($"Тип {type} не является деревом!");
+            }
+            
             Age = age;
             CountFruit = countFruit;
             TreeSick = treeSick;
@@ -148,7 +153,7 @@ namespace pract2
             _height = t.Height;
             _age = t.Age;
             _countFruit = t.CountFruit;
-            _treeSick = t.TreeSick;
+            TreeSick = t.TreeSick;
         }
     }
 }
